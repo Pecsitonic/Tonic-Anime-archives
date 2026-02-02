@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tonic! - Series (Fan Archives)</title>
+
+  <style>
+    :root{
+      --bg:#0a0a0a;
+      --glass:rgba(25,25,25,.60);
+      --glass2:rgba(25,25,25,.78);
+      --stroke:rgba(255,255,255,.14);
+      --accent:#ff4fd8;
+      --accent2:#6dfcff;
+      --text:#ffffff;
+      --muted:rgba(255,255,255,.75);
+    }
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      overflow-x:hidden;
+    }
+
+    /* ===== Fondo tipo “página ejemplo” ===== */
+    .bg {
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      background:
+        radial-gradient(1200px 700px at 50% 30%, rgba(255,79,216,.20), transparent 55%),
+        radial-gradient(900px 600px at 20% 80%, rgba(109,252,255,.14), transparent 55%),
+        linear-gradient(180deg, #0b0b0b, #070707);
+    }
+    #bgVideo{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      filter: blur(9px) brightness(.55) saturate(1.05);
+      opacity:.95;
+    }
+    .bgOverlay{
+      position:absolute;
+      inset:0;
+      background: rgba(0,0,0,.45);
+      backdrop-filter: blur(2px);
+    }
+
+    /* ===== Header centrado ===== */
+    header{
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 18px 18px 14px;
+      background: rgba(0,0,0,.35);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .headerInner{
+      max-width: 1200px;
+      margin: 0 auto;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap: 12px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight: 900;
+      letter-spacing: .4px;
+      font-size: 30px;
+    }
+    .brand .dot{
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background: var(--accent);
+      box-shadow: 0 0 18px rgba(255,79,216,.5);
+    }
+    .brand span{ color: var(--accent); }
+    .brand small{
+      color: rgba(255,255,255,.85);
+      font-weight:800;
+    }
+
+    /* ===== Selector de animes (tabs) ===== */
+    .animeTabs{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+    .tab{
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(20,20,20,.55);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor:pointer;
+      font-weight:800;
+      transition:.18s;
+    }
+    .tab:hover{
+      transform: translateY(-1px);
+      border-color: rgba(255,79,216,.35);
+    }
+    .tab.active{
+      background: rgba(255,79,216,.16);
+      border-color: rgba(255,79,216,.55);
+      box-shadow: 0 10px 26px rgba(0,0,0,.25);
+    }
+
+    /* ===== Layout principal ===== */
+    main{
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 26px 18px 60px;
+    }
+
+    /* Panel “glass” tipo ejemplo */
+    .panel{
+      background: var(--glass);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 18px;
+      padding: 18px 18px;
+      box-shadow: 0 18px 50px rgba(0,0,0,.35);
+    }
+
+    /* Títulos */
+    .h2{
+      margin: 0 0 12px;
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--accent2);
+      letter-spacing:.2px;
+    }
+    .sub{
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    /* Grid de episodios */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 16px;
+    }
+
+    /* Tarjeta episodio */
+    .card{
+      background: var(--glass2);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 16px;
+      padding: 12px;
+      overflow:hidden;
+    }
+
+    .thumb{
+      width:100%;
+      height: 140px;
+      border-radius: 14px;
+      overflow:hidden;
+      position:relative;
+      background: linear-gradient(135deg, rgba(255,79,216,.22), rgba(109,252,255,.14));
+      border: 1px solid rgba(255,255,255,.10);
+      cursor:pointer;
+    }
+    .thumb img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .thumb .fallback{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight: 900;
+      font-size: 28px;
+      color: rgba(255,255,255,.92);
+      text-shadow: 0 10px 24px rgba(0,0,0,.55);
+      user-select:none;
+    }
+
+    .epTitle{
+      margin: 10px 2px 6px;
+      font-weight: 900;
+      color: #fff;
+      font-size: 15px;
+    }
+    .epDesc{
+      margin: 0 2px 12px;
+      color: rgba(255,255,255,.75);
+      font-size: 13px;
+      line-height: 1.25;
+      min-height: 32px;
+    }
+
+    /* Botones */
+    .actions{
+      display:flex;
+      gap: 10px;
+      justify-content:flex-start;
+      flex-wrap:wrap;
+    }
+    .btn{
+      border:none;
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor:pointer;
+      font-weight: 900;
+      font-size: 13px;
+      transition:.15s;
+    }
+    .btn.ver{
+      background: rgba(255,79,216,.90);
+      color:#101010;
+    }
+    .btn.ver:hover{
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+    }
+
+    /* ===== Modal “VER” ===== */
+    #modal{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 18px;
+      background: rgba(0,0,0,.78);
+      z-index: 9999;
+    }
+    .modalBox{
+      width: min(980px, 96vw);
+      background: rgba(10,10,10,.95);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 18px;
+      box-shadow: 0 24px 70px rgba(0,0,0,.55);
+      overflow:hidden;
+    }
+    .modalTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,.06);
+      border-bottom: 1px solid rgba(255,255,255,.10);
+    }
+    .modalTop strong{
+      font-size: 14px;
+      color:#fff;
+    }
+    .closeBtn{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      cursor:pointer;
+      user-select:none;
+      font-weight: 900;
+      color:#fff;
+      opacity:.95;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.25);
+    }
+    .closeBtn:hover{ border-color: rgba(255,79,216,.45); }
+    .closeIcon{
+      width: 22px;
+      height: 22px;
+      border-radius: 9px;
+      position: relative;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+    }
+    .closeIcon::before,
+    .closeIcon::after{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:50%;
+      width: 12px;
+      height: 2px;
+      background: var(--accent);
+      transform-origin:center;
+    }
+    .closeIcon::before{ transform: translate(-50%,-50%) rotate(45deg); }
+    .closeIcon::after { transform: translate(-50%,-50%) rotate(-45deg); }
+    .modalBody{ padding: 14px; }
+    #driveFrame{
+      width:100%;
+      aspect-ratio: 16 / 9;
+      border: 0;
+      border-radius: 14px;
+      background:#000;
+    }
+
+    /* Responsive */
+    @media (max-width:520px){
+      .brand{ font-size:24px; }
+      .grid{ grid-template-columns: 1fr; }
+      .thumb{ height: 160px; }
+    }
+
+    /* ====== (SOLO LO NECESARIO: ART EN ESQUINAS) ====== */
+    .panel{ position: relative; }
+
+    .sideArt{
+      position:absolute;
+      top: 0;
+      bottom: 0;
+      width: 220px;
+      display:flex;
+      flex-direction:column;
+      gap: 16px;
+      pointer-events:none;
+      z-index: 2;
+      justify-content:center;
+    }
+
+    /* pegadas al borde del viewport, "saliendo" */
+    .sideArt.left{
+      left: calc(-1 * (100vw - 100%) / 2);
+      padding-left: 14px;
+      align-items:flex-start;
+    }
+    .sideArt.right{
+      right: calc(-1 * (100vw - 100%) / 2);
+      padding-right: 14px;
+      align-items:flex-end;
+    }
+
+    /* tamaño y presencia */
+    .sideArt img{
+      width: 170px;
+      height: auto;
+      border-radius: 16px;
+      box-shadow: 0 22px 60px rgba(0,0,0,.55);
+      opacity: .98;
+      transform: translateY(0);
+    }
+
+    /* más "hacia abajo" pero no tanto */
+    .panel[data-art="kon"] .sideArt{ transform: translateY(18px); }
+    .panel[data-art="shoujo"] .sideArt{ transform: translateY(10px); }
+
+    /* Shoujo un toque más grande */
+    .panel[data-art="shoujo"] .sideArt img{ width: 190px; }
+
+    /* ocultar en pantallas chicas */
+    @media (max-width:1000px){
+      .sideArt{ display:none; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Fondo -->
+  <div class="bg">
+    <video id="bgVideo" autoplay muted loop playsinline>
+      <source src="bg.mp4" type="video/mp4">
+    </video>
+    <div class="bgOverlay"></div>
+  </div>
+
+  <header>
+    <div class="headerInner">
+      <div class="brand">
+        <div class="dot"></div>
+        <span>Tonic!</span>
+        <small>- Series</small>
+      </div>
+<div>
+		  <h3>Archivos de animes subtitulados al español (pagina de fans) por pecsitonic</h3>
+   <h3> Creditos a Kyoto Animation y White Fox</h3>
+      </div>
+      <!-- Tabs -->
+      <div class="animeTabs">
+        <button class="tab active" data-show="kon-s1">K-ON! (T1)</button>
+        <button class="tab" data-show="kon-s2">K-ON! (T2)</button>
+        <button class="tab" data-show="shoujo">Shoujo Shuumatsu Ryokou</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div id="kon-s1" class="panel" data-art="kon">
+      <h2 class="h2">K-ON! — Temporada 1</h2>
+      <p class="sub">
+       K-On! Temporada 1 sigue a cuatro chicas de secundaria (Yui, Ritsu, Mio y Mugi) que forman una banda de rock en su club de música ligera, salvándolo de la disolución mientras descubren su amor por la música, la amistad y, sobre todo, ¡el té y los pasteles!, en un ambiente adorable y reconfortante de "slice of life" (recuento de la vida) que se enfoca más en sus interacciones cotidianas que en grandes conciertos. 
+      </p>
+
+      <!-- ESQUINAS (K-ON T1) -->
+      <div class="sideArt left">
+        <img src="Ritsu.png" alt="">
+        <img src="tsu.png" alt="">
+        <img src="yui.png" alt="">
+      </div>
+      <div class="sideArt right">
+        <img src="azusa.png" alt="">
+        <img src="mio.png" alt="">
+      </div>
+
+      <div id="episodes-kon-s1" class="grid"></div>
+    </div>
+
+    <div id="kon-s2" class="panel" data-art="kon" style="display:none; margin-top:18px;">
+      <h2 class="h2">K-ON! — Temporada 2</h2>
+      <p class="sub">K-ON!! (Temporada 2) Las chicas del club de música ligera continúan su vida escolar entre ensayos, nuevos desafíos y momentos cotidianos llenos de humor y ternura. La amistad se fortalece, la música sigue creciendo y cada día trae pequeñas experiencias que hacen de esta temporada un viaje aún más emotivo y divertido. </p>
+
+      <!-- ESQUINAS (K-ON T2) -->
+      <div class="sideArt left">
+        <img src="Ritsu.png" alt="">
+        <img src="tsu.png" alt="">
+        <img src="yui.png" alt="">
+      </div>
+      <div class="sideArt right">
+        <img src="azusa.png" alt="">
+        <img src="mio.png" alt="">
+      </div>
+
+      <div id="episodes-kon-s2" class="grid"></div>
+    </div>
+
+    <div id="shoujo" class="panel" data-art="shoujo" style="display:none; margin-top:18px;">
+      <h2 class="h2">Shoujo Shuumatsu Ryokou</h2>
+      <p class="sub">Girls' Last Tour (Shōjo Shūmatsu Ryokō) es un anime postapocalíptico "slice of life" que sigue a las niñas Chito y Yuri mientras viajan en su Kettenkrad por las ruinas desoladas de la civilización, buscando comida y refugio, encontrando belleza y melancolía en un mundo silencioso donde parecen ser de las últimas humanas, explorando la amistad y la vida en medio de la nada. </p>
+
+      <!-- ESQUINAS (GIRLS LAST TOUR) -->
+      <div class="sideArt left">
+        <img src="yuuri.png" alt="">
+      </div>
+      <div class="sideArt right">
+        <img src="moo.png" alt="">
+      </div>
+
+      <div id="episodes-shoujo" class="grid"></div>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  <div id="modal">
+    <div class="modalBox" id="modalBox">
+      <div class="modalTop">
+        <strong id="modalTitle">Reproduciendo...</strong>
+        <div class="closeBtn" id="closeBtn">
+          <div class="closeIcon"></div>
+          Cerrar
+        </div>
+      </div>
+      <div class="modalBody">
+        <iframe id="driveFrame" allow="autoplay; fullscreen" allowfullscreen></iframe>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ========= DRIVE FIX (match[1] + "/preview") ========= */
+    function driveViewToPreview(url){
+      const match = url.match(/\/file\/d\/([^\/]+)/);
+      if(!match) return null;
+      return "https://drive.google.com/file/d/" + match[1] + "/preview";
+    }
+
+    /* ========= LISTAS (tus links tal cual) ========= */
+
+    /* K-ON TEMPORADA 1 (14) */
+    const season1 = [
+      "https://drive.google.com/file/d/1R4GoEMcJu8KNcwUD5pc-A7CaaNjz48vC/view",
+      "https://drive.google.com/file/d/1xlpY0yFPg7iH1js2KiTXtDqnCbS0YbUD/view",
+      "https://drive.google.com/file/d/14BrQPK8WlCdqxsSHMm2towkhuegEf5tZ/view",
+      "https://drive.google.com/file/d/1tdXEpQvCoWww7ogJX37ngW12m3xBwSMO/view",
+      "https://drive.google.com/file/d/1sQHISNilSJmqJG45M9YL35WEDKFE7FIy/view",
+      "https://drive.google.com/file/d/1W7YQF0EFQCzj_5VGJTdcSDuNBB6SBPyu/view",
+      "https://drive.google.com/file/d/1lhL0qMiNuGFAfrgEyt-b3cIeWlJDT-L4/view",
+      "https://drive.google.com/file/d/1JWiNQTTkxlBQw4sepfSBLUMHhQqzIvhK/view",
+      "https://drive.google.com/file/d/1IS5wh1RuA_JppN3p4ArM57Nfyo89Cdq-/view",
+      "https://drive.google.com/file/d/1yTvTVKcdo0hwWsvA7WK7SQsf0J-Id-NO/view",
+      "https://drive.google.com/file/d/1q7mruGzf4tOGaQecyJyTaqbLP8DgokXj/view",
+      "https://drive.google.com/file/d/1T41KDprqSpp5gmncVZczu2yNhZwDhHi1/view",
+      "https://drive.google.com/file/d/15j0N1bHQLID-nDRE3162PhkWyA3HvTAg/view",
+      "https://drive.google.com/file/d/1exn8suL4r7Zb7Is-MzUezzUfHLn9ojli/view"
+    ];
+
+    /* K-ON TEMPORADA 2 (27) */
+    const season2 = [
+      "https://drive.google.com/file/d/1fYQdLjiWrVo13JbQcECJPiAUDCzo2SS4/view",
+      "https://drive.google.com/file/d/1Mf2uCRSOo2PgKtxZO2RpCNXs7tB3BX6j/view",
+      "https://drive.google.com/file/d/1LUG8XT5Ub92tGeyOksXXxtoBm27DCX9x/view",
+      "https://drive.google.com/file/d/1R15F8pfsnM6hCETVhtQBwJ1_t8JWvG9H/view",
+      "https://drive.google.com/file/d/1GIsjoQHLVWT7WKjdhMprWlJjdG2CM1nb/view",
+      "https://drive.google.com/file/d/1n3cJWl6VUqPXL3F6cHduhtf2i_fNPvHO/view",
+      "https://drive.google.com/file/d/1oJg3JudLXw6wViVP1N7tNZJQS8JvOMCH/view",
+      "https://drive.google.com/file/d/1EcvJhgi4NkdEqWL0f-dQXcn2NmuuqX8O/view",
+      "https://drive.google.com/file/d/1a6kEqZQiArauiiajCmJRCiv-1Weg7UGk/view",
+      "https://drive.google.com/file/d/1sfFEc-q8AJ05wk0656yL6MxQTr6H9MDp/view",
+      "https://drive.google.com/file/d/1U4G4QiZj-xanV5VmCM__uDAFD15GOxA5/view",
+      "https://drive.google.com/file/d/1Z0v7TRb2wF-sXRWDcRUe8OGedKwPhe63/view",
+      "https://drive.google.com/file/d/1-yIluOClgCb9q5nzsr5z4Kv8t6kX-x-1/view",
+      "https://drive.google.com/file/d/11bqgRfLdpbZubfrQ0g5hJg3QHMvRO_fC/view",
+      "https://drive.google.com/file/d/1ZAiSsCLKik2gDMO3NZogaByXgsZxNYYe/view",
+      "https://drive.google.com/file/d/1KVy2w3ZClv7u2RIrZ0BzI_2Xc3sNrqMg/view",
+      "https://drive.google.com/file/d/1wfUji-2yAdFCfAE6cLjt-1s6GxQKq33D/view",
+      "https://drive.google.com/file/d/1AyHOEKX4_fsgS-puyEDqZbTRrXvbV_yI/view",
+      "https://drive.google.com/file/d/1Ar3qAiDfD2SCaKqQDaxNqKH5v8gIxQd8/view",
+      "https://drive.google.com/file/d/1AuIqYzEBYBtBELnIJFXXH78X5LKqJYx0/view",
+      "https://drive.google.com/file/d/1ToBbdCTm5gc1-Z2n38hkaWEKAFAuBL9j/view",
+      "https://drive.google.com/file/d/1zKykALZSlr15WCWpbQJOhggAu-TOwaR3/view",
+      "https://drive.google.com/file/d/127Icpg9Af2dIMTfGjCjKZ3OQAFF5bgbu/view",
+      "https://drive.google.com/file/d/1iKgwNi5uqEDM1qz8guBa3xWiDS8OCF1f/view",
+      "https://drive.google.com/file/d/1iiuk8UFDWU4lHkpgP4NDpi2efGN30zfi/view",
+      "https://drive.google.com/file/d/1-Y86axuAy62ELJwgOuZMzDq8GuAMqhKs/view",
+      "https://drive.google.com/file/d/1b_xWS9jHFCswLaG0su33QrpgH7Ek7FWM/view"
+    ];
+
+    /* GIRL LAST TOUR (12) */
+    const shoujo = [
+      "https://drive.google.com/file/d/17XyxD9jjVZyOp-qP6ekathaACScbv_Ck/view",
+      "https://drive.google.com/file/d/1LAglTm3-y-wokmvsV0rIaiF4x_H7rB1g/view",
+      "https://drive.google.com/file/d/1UHf8UO4uvpY8fynpvsM_ior6TPKuRenA/view",
+      "https://drive.google.com/file/d/16EO_P6up4mJ4kRWYltS98VJpFVLBNnxZ/view",
+      "https://drive.google.com/file/d/1yDBKcQb3VDClgHXpgmuIFohEZtErIbZl/view",
+      "https://drive.google.com/file/d/1-PREArE3z6qKTCVtKa-2SS1PE8BZz78b/view",
+      "https://drive.google.com/file/d/11lACOl7TL-afkroUBpLpK95zIToU7rV0/view",
+      "https://drive.google.com/file/d/18uzqnpnOOgVas1Yi2v3mC9JBsQ91DkhJ/view",
+      "https://drive.google.com/file/d/1or_bijK5-xvkdLm_V6x3gQ1B8fH2nYRY/view",
+      "https://drive.google.com/file/d/13H9_Tl3yZQXpsencuUtH3w9XnxidjsHg/view",
+      "https://drive.google.com/file/d/1zcD1-EOOVfVfPyVEfn6BLdcn1B2vzpXp/view",
+      "https://drive.google.com/file/d/1EatyJFdoSWBjwXbviQL2VCsyDZsmll38/view"
+    ];
+
+    /* ========= TITULOS + DESCRIPCIONES ========= */
+    const meta = {
+      "kon-s1": [
+        { title: "¡Disolver el club!", desc: "Yui se une al Club de Música Ligera justo a tiempo para salvarlo de la disolución, junto a Mio, Ritsu y Mugi." },
+        { title: "¡Instrumento!", desc: "Yui recibe su guitarra, \"Gita\", y comienza a aprender con ayuda de sus amigas." },
+        { title: "¡Sesión de estudio!", desc: "Las chicas intentan estudiar, pero terminan distrayéndose con dulces y música." },
+        { title: "¡Campo de entrenamiento!", desc: "El club va a un campo de entrenamiento para mejorar, aunque la diversión es la prioridad." },
+        { title: "¡Asesor!", desc: "Sawako se convierte en la asesora del club, revelando su pasado rockero." },
+        { title: "¡Festival escolar!", desc: "El club se presenta en el festival escolar con su primera canción, \"Fuwa Fuwa Time\"." },
+        { title: "¡Navidad!", desc: "Las chicas celebran la Navidad juntas, con regalos y un ambiente festivo." },
+        { title: "¡Recepción de primer año!", desc: "Conocen a Azusa Nakano, la nueva guitarrista que se une al club." },
+        { title: "¡Nuevo miembro del club!", desc: "Azusa se integra y trae un soplo de aire fresco al club." },
+        { title: "¡Otro campo de entrenamiento!", desc: "Otra excursión de verano, llena de más dulces y diversión." },
+        { title: "¡Crisis!", desc: "El club enfrenta una crisis antes del festival de otoño." },
+        { title: "¡Música ligera! (Final)", desc: "El club da un gran concierto en el festival de otoño." },
+        { title: "¡Días de invierno! (Extra)", desc: "Un episodio especial de invierno, incluyendo la canción \"Fude pen ~Ballpen~\"." },
+        { title: "¡Vive en casa!", desc: "Maki invita al club a tocar en una sala de conciertos en Nochevieja, donde Catherine se reencuentra con Janice. Episodio exclusivo del anime, lanzado como OVA en la séptima edición en DVD/Blu-ray de K-ON!." }
+      ],
+      "kon-s2": [
+        { title: "¡Tercer año!", desc: "Las chicas comienzan su último año escolar, enfrentándose a nuevos desafíos y la proximidad de la graduación." },
+        { title: "¡Poniendo orden!", desc: "Intentan organizar la sala del club, pero Ritsu y Yui la vuelven un caos." },
+        { title: "¡La batería!", desc: "La profesora Sawako intenta enseñar a Mio a tocar la batería." },
+        { title: "¡Viaje de fin de curso!", desc: "Las chicas se van de viaje de estudios a Kioto." },
+        { title: "¡En casa!", desc: "Las chicas comparten una tarde de té y estudio en casa de Yui." },
+        { title: "¡Época de lluvias!", desc: "Reflexiones sobre la temporada de lluvias y la música." },
+        { title: "¡Fiesta del té!", desc: "Un día tranquilo de té y dulces, con una nueva amiga." },
+        { title: "¡Carrera!", desc: "Día de deportes y la participación de las chicas." },
+        { title: "¡Exámenes finales!", desc: "Las chicas se esfuerzan (o no) por estudiar para sus exámenes." },
+        { title: "¡Profesora!", desc: "La profesora Sawako se convierte en una figura más cercana y mentor." },
+        { title: "¡Caliente!", desc: "El verano se acerca y el calor afecta a las chicas." },
+        { title: "¡Festival de verano!", desc: "Las preparaciones y actuaciones en el festival escolar." },
+        { title: "¡Tarjeta de fin de verano!", desc: "Disfrutando los últimos días del verano." },
+        { title: "¡Entrenamiento de verano!", desc: "Sesiones de práctica musical intensivas." },
+        { title: "¡Maratón!", desc: "Una maratón de caridad donde las chicas participan." },
+        { title: "¡Mayor!", desc: "Las chicas reflexionan sobre crecer y madurar." },
+        { title: "¡Sin sala de música!", desc: "Temporalmente sin su sala, buscan un nuevo lugar para practicar." },
+        { title: "¡Papel Principal!", desc: "Las chicas actúan en una obra de teatro escolar." },
+        { title: "¡Romeo y Julieta!", desc: "La adaptación de la obra de teatro en la escuela." },
+        { title: "¡Nuevamente Festival Escolar!", desc: "El último festival escolar para las chicas de tercero." },
+        { title: "¡Día de nieve!", desc: "Disfrutando de la nieve en la escuela." },
+        { title: "¡Navidad!", desc: "Celebración navideña y regalo de intercambios." },
+        { title: "¡Año nuevo!", desc: "Deseos para el nuevo año." },
+        { title: "¡Paseo!", desc: "Un paseo especial antes de la graduación." },
+        { title: "¡Graduación!", desc: "La ceremonia de graduación y la última presentación de HTT." },
+        { title: "¡Una vez más!", desc: "Un último encuentro y recuerdos compartidos." },
+        { title: "¡Gracias!", desc: "Despedida y agradecimiento a todos." }
+      ],
+      "shoujo": [
+        { title: "Cielo Estrellado", desc: "Introducción a Chito y Yuri mientras exploran en su vehículo, encontrando un entorno desolado y vacío." },
+        { title: "Guerra", desc: "Descubren vestigios de la guerra pasada y cómo afectó a este mundo." },
+        { title: "Baño", desc: "Buscan un lugar para asearse en medio de las ruinas, encontrando comodidades básicas." },
+        { title: "Diario", desc: "Encuentran un diario que les cuenta historias de tiempos pasados." },
+        { title: "Colada", desc: "Se enfrentan a la tarea de lavar su ropa, un momento mundano en su viaje." },
+        { title: "Encuentro", desc: "Se topan con otros supervivientes, ofreciendo un breve respiro social." },
+        { title: "Ciudad", desc: "Exploran una enorme ciudad en ruinas, llena de maravillas y peligros." },
+        { title: "Luces de la Calle", desc: "Descubren sistemas de iluminación antiguos en la ciudad." },
+        { title: "Granja", desc: "Encuentran una granja automatizada abandonada, una reliquia tecnológica." },
+        { title: "Amigos", desc: "Recuerdan sus vidas antes del fin del mundo y la amistad que forjaron." },
+        { title: "Memoria", desc: "Reflexionan sobre el pasado y el futuro mientras avanzan." },
+        { title: "Cielo Estrellado (Parte 2)", desc: "Alcanzan la cima de la estructura más alta, logrando su objetivo final y encontrando una paz agridulce." }
+      ]
+    };
+
+    /* ========= MODAL ========= */
+    const modal = document.getElementById("modal");
+    const driveFrame = document.getElementById("driveFrame");
+    const modalTitle = document.getElementById("modalTitle");
+    const closeBtn = document.getElementById("closeBtn");
+    const modalBox = document.getElementById("modalBox");
+
+    function openModal(previewUrl, title){
+      modalTitle.textContent = title || "Reproduciendo...";
+      driveFrame.src = previewUrl;
+      modal.style.display = "flex";
+    }
+
+    function closeModal(){
+      driveFrame.src = "";
+      modal.style.display = "none";
+    }
+
+    // Cerrar tocando afuera
+    modal.addEventListener("click", closeModal);
+    modalBox.addEventListener("click", (e)=> e.stopPropagation());
+    closeBtn.addEventListener("click", closeModal);
+
+    /* ========= RENDER ========= */
+    function render(listUrls, gridId, metaKey, imgPrefix, imgFolder){
+      const grid = document.getElementById(gridId);
+      grid.innerHTML = "";
+
+      listUrls.forEach((url, i) => {
+        const preview = driveViewToPreview(url);
+        const m = (meta[metaKey] && meta[metaKey][i]) ? meta[metaKey][i] : {
+          title: `Episodio ${i+1}`,
+          desc: "Descripción pendiente."
+        };
+
+        const num = i + 1;
+        const imgPath = (imgFolder ? (imgFolder + "/") : "") + imgPrefix + num + ".png";
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+          <div class="thumb" data-preview="${preview}" data-title="${escapeHtml(m.title)}">
+            <img src="${imgPath}" alt="${escapeHtml(m.title)}"
+                 onerror="this.style.display='none'; const fb=this.nextElementSibling; fb.style.display='flex'; fb.textContent='${num}';">
+            <div class="fallback" style="display:none"></div>
+          </div>
+
+          <div class="epTitle">${escapeHtml(m.title)}</div>
+          <div class="epDesc">${escapeHtml(m.desc)}</div>
+
+          <div class="actions">
+            <button class="btn ver" data-preview="${preview}" data-title="${escapeHtml(m.title)}">VER</button>
+          </div>
+        `;
+
+        // Click en miniatura o en VER -> abre modal
+        card.querySelector(".thumb").addEventListener("click", () => openModal(preview, m.title));
+        card.querySelector(".btn.ver").addEventListener("click", () => openModal(preview, m.title));
+
+        grid.appendChild(card);
+      });
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    /* ========= TABS ========= */
+    const tabs = document.querySelectorAll(".tab");
+    const panels = ["kon-s1", "kon-s2", "shoujo"];
+
+    tabs.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const target = btn.dataset.show;
+
+        tabs.forEach(t => t.classList.remove("active"));
+        btn.classList.add("active");
+
+        panels.forEach(id => {
+          document.getElementById(id).style.display = (id === target) ? "block" : "none";
+        });
+      });
+    });
+
+    /* ========= INIT ========= */
+    /* thumbs:
+       - K-ON T1: a1..a14 dentro de carpeta k1
+       - K-ON T2: b1..b27 dentro de carpeta k2
+       - Shoujo:  c1..c12 dentro de carpeta s1  (<<< ESTE ERA EL PROBLEMA: te lo dejo bien)
+    */
+    render(season1, "episodes-kon-s1", "kon-s1", "a", "k1");
+    render(season2, "episodes-kon-s2", "kon-s2", "b", "k2");
+    render(shoujo,  "episodes-shoujo", "shoujo", "c", "s1");
+  </script>
+</body>
+</html>
