@@ -26,7 +26,7 @@
       overflow-x:hidden;
     }
 
-    /* ===== Fondo tipo “página ejemplo” ===== */
+    
     .bg {
       position: fixed;
       inset: 0;
@@ -52,7 +52,7 @@
       backdrop-filter: blur(2px);
     }
 
-    /* ===== Header centrado ===== */
+    
     header{
       position: sticky;
       top: 0;
@@ -91,7 +91,7 @@
       font-weight:800;
     }
 
-    /* ===== Selector de animes (tabs) ===== */
+    
     .animeTabs{
       display:flex;
       gap:10px;
@@ -118,14 +118,14 @@
       box-shadow: 0 10px 26px rgba(0,0,0,.25);
     }
 
-    /* ===== Layout principal ===== */
+    
     main{
       max-width: 1200px;
       margin: 0 auto;
       padding: 26px 18px 60px;
     }
 
-    /* Panel “glass” tipo ejemplo */
+    
     .panel{
       background: var(--glass);
       border: 1px solid rgba(255,255,255,.10);
@@ -134,7 +134,7 @@
       box-shadow: 0 18px 50px rgba(0,0,0,.35);
     }
 
-    /* Títulos */
+    
     .h2{
       margin: 0 0 12px;
       font-size: 26px;
@@ -148,20 +148,21 @@
       line-height: 1.35;
     }
 
-    /* Grid de episodios */
+    
     .grid{
       display:grid;
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 16px;
     }
 
-    /* Tarjeta episodio */
+    
     .card{
       background: var(--glass2);
       border: 1px solid rgba(255,255,255,.10);
       border-radius: 16px;
       padding: 12px;
       overflow:hidden;
+      min-height:0;
     }
 
     .thumb{
@@ -207,7 +208,7 @@
       min-height: 32px;
     }
 
-    /* Botones */
+    
     .actions{
       display:flex;
       gap: 10px;
@@ -232,7 +233,7 @@
       filter: brightness(1.05);
     }
 
-    /* ===== Modal “VER” ===== */
+    
     #modal{
       position:fixed;
       inset:0;
@@ -309,14 +310,14 @@
       background:#000;
     }
 
-    /* Responsive */
+    
     @media (max-width:520px){
       .brand{ font-size:24px; }
       .grid{ grid-template-columns: 1fr; }
       .thumb{ height: 160px; }
     }
 
-    /* ====== (SOLO LO NECESARIO: ART EN ESQUINAS) ====== */
+    
     .panel{ position: relative; }
 
     .sideArt{
@@ -332,7 +333,7 @@
       justify-content:center;
     }
 
-    /* pegadas al borde del viewport, "saliendo" */
+    
     .sideArt.left{
       left: calc(-1 * (100vw - 100%) / 2);
       padding-left: 14px;
@@ -344,7 +345,7 @@
       align-items:flex-end;
     }
 
-    /* tamaño y presencia */
+    
     .sideArt img{
       width: 170px;
       height: auto;
@@ -354,14 +355,14 @@
       transform: translateY(0);
     }
 
-    /* más "hacia abajo" pero no tanto */
+    
     .panel[data-art="kon"] .sideArt{ transform: translateY(18px); }
     .panel[data-art="shoujo"] .sideArt{ transform: translateY(10px); }
 
-    /* Shoujo un toque más grande */
+    
     .panel[data-art="shoujo"] .sideArt img{ width: 190px; }
 
-    /* ocultar en pantallas chicas */
+    
     @media (max-width:1000px){
       .sideArt{ display:none; }
     }
@@ -369,7 +370,7 @@
 </head>
 
 <body>
-  <!-- Fondo -->
+  
   <div class="bg">
     <video id="bgVideo" autoplay muted loop playsinline>
       <source src="bg.mp4" type="video/mp4">
@@ -388,7 +389,7 @@
 		  <h3>Archivos de animes subtitulados al español (pagina de fans) por pecsitonic</h3>
    <h3> Creditos a Kyoto Animation y White Fox</h3>
       </div>
-      <!-- Tabs -->
+      
       <div class="animeTabs">
         <button class="tab active" data-show="kon-s1">K-ON! (T1)</button>
         <button class="tab" data-show="kon-s2">K-ON! (T2)</button>
@@ -404,7 +405,7 @@
        K-On! Temporada 1 sigue a cuatro chicas de secundaria (Yui, Ritsu, Mio y Mugi) que forman una banda de rock en su club de música ligera, salvándolo de la disolución mientras descubren su amor por la música, la amistad y, sobre todo, ¡el té y los pasteles!, en un ambiente adorable y reconfortante de "slice of life" (recuento de la vida) que se enfoca más en sus interacciones cotidianas que en grandes conciertos. 
       </p>
 
-      <!-- ESQUINAS (K-ON T1) -->
+      
       <div class="sideArt left">
         <img src="Ritsu.png" alt="">
         <img src="tsu.png" alt="">
@@ -422,7 +423,7 @@
       <h2 class="h2">K-ON! — Temporada 2</h2>
       <p class="sub">K-ON!! (Temporada 2) Las chicas del club de música ligera continúan su vida escolar entre ensayos, nuevos desafíos y momentos cotidianos llenos de humor y ternura. La amistad se fortalece, la música sigue creciendo y cada día trae pequeñas experiencias que hacen de esta temporada un viaje aún más emotivo y divertido. </p>
 
-      <!-- ESQUINAS (K-ON T2) -->
+      
       <div class="sideArt left">
         <img src="Ritsu.png" alt="">
         <img src="tsu.png" alt="">
@@ -440,7 +441,7 @@
       <h2 class="h2">Shoujo Shuumatsu Ryokou</h2>
       <p class="sub">Girls' Last Tour (Shōjo Shūmatsu Ryokō) es un anime postapocalíptico "slice of life" que sigue a las niñas Chito y Yuri mientras viajan en su Kettenkrad por las ruinas desoladas de la civilización, buscando comida y refugio, encontrando belleza y melancolía en un mundo silencioso donde parecen ser de las últimas humanas, explorando la amistad y la vida en medio de la nada. </p>
 
-      <!-- ESQUINAS (GIRLS LAST TOUR) -->
+      
       <div class="sideArt left">
         <img src="yuuri.png" alt="">
       </div>
@@ -452,7 +453,7 @@
     </div>
   </main>
 
-  <!-- Modal -->
+  
   <div id="modal">
     <div class="modalBox" id="modalBox">
       <div class="modalTop">
@@ -469,17 +470,18 @@
   </div>
 
   <script>
-    /* ========= DRIVE FIX (match[1] + "/preview") ========= */
-    function driveViewToPreview(url){
-      const match = url.match(/\/file\/d\/([^\/]+)/);
+    var cosa_rara = 0;
+    
+    function arreglaDrive(url){
+      var match = url.match(/\/file\/d\/([^\/]+)/);
       if(!match) return null;
       return "https://drive.google.com/file/d/" + match[1] + "/preview";
     }
 
-    /* ========= LISTAS (tus links tal cual) ========= */
+    
 
-    /* K-ON TEMPORADA 1 (14) */
-    const season1 = [
+    
+    var temp1 = [
       "https://drive.google.com/file/d/1R4GoEMcJu8KNcwUD5pc-A7CaaNjz48vC/view",
       "https://drive.google.com/file/d/1xlpY0yFPg7iH1js2KiTXtDqnCbS0YbUD/view",
       "https://drive.google.com/file/d/14BrQPK8WlCdqxsSHMm2towkhuegEf5tZ/view",
@@ -496,8 +498,8 @@
       "https://drive.google.com/file/d/1exn8suL4r7Zb7Is-MzUezzUfHLn9ojli/view"
     ];
 
-    /* K-ON TEMPORADA 2 (27) */
-    const season2 = [
+    
+    var tempdos = [
       "https://drive.google.com/file/d/1fYQdLjiWrVo13JbQcECJPiAUDCzo2SS4/view",
       "https://drive.google.com/file/d/1Mf2uCRSOo2PgKtxZO2RpCNXs7tB3BX6j/view",
       "https://drive.google.com/file/d/1LUG8XT5Ub92tGeyOksXXxtoBm27DCX9x/view",
@@ -527,8 +529,8 @@
       "https://drive.google.com/file/d/1b_xWS9jHFCswLaG0su33QrpgH7Ek7FWM/view"
     ];
 
-    /* GIRL LAST TOUR (12) */
-    const shoujo = [
+    
+    var viajesito = [
       "https://drive.google.com/file/d/17XyxD9jjVZyOp-qP6ekathaACScbv_Ck/view",
       "https://drive.google.com/file/d/1LAglTm3-y-wokmvsV0rIaiF4x_H7rB1g/view",
       "https://drive.google.com/file/d/1UHf8UO4uvpY8fynpvsM_ior6TPKuRenA/view",
@@ -543,8 +545,8 @@
       "https://drive.google.com/file/d/1EatyJFdoSWBjwXbviQL2VCsyDZsmll38/view"
     ];
 
-    /* ========= TITULOS + DESCRIPCIONES ========= */
-    const meta = {
+    
+    var dataAnime = {
       "kon-s1": [
         { title: "1-¡Disolver el club!", desc: "Yui se une al Club de Música Ligera justo a tiempo para salvarlo de la disolución, junto a Mio, Ritsu y Mugi." },
         { title: "2-¡Instrumento!", desc: "Yui recibe su guitarra, \"Gita\", y comienza a aprender con ayuda de sus amigas." },
@@ -606,71 +608,69 @@
       ]
     };
 
-    /* ========= MODAL ========= */
-    const modal = document.getElementById("modal");
-    const driveFrame = document.getElementById("driveFrame");
-    const modalTitle = document.getElementById("modalTitle");
-    const closeBtn = document.getElementById("closeBtn");
-    const modalBox = document.getElementById("modalBox");
+    
+    var modal = document.getElementById("modal");
+    var driveFrame = document.getElementById("driveFrame");
+    var modalTitle = document.getElementById("modalTitle");
+    var closeBtn = document.getElementById("closeBtn");
+    var modalBox = document.getElementById("modalBox");
 
-    function openModal(previewUrl, title){
+    function abrirCaja(previewUrl, title){
       modalTitle.textContent = title || "Reproduciendo...";
       driveFrame.src = previewUrl;
       modal.style.display = "flex";
     }
 
-    function closeModal(){
+    function cerrarCaja(){
       driveFrame.src = "";
       modal.style.display = "none";
     }
 
-    // Cerrar tocando afuera
-    modal.addEventListener("click", closeModal);
+    modal.addEventListener("click", cerrarCaja);
     modalBox.addEventListener("click", (e)=> e.stopPropagation());
-    closeBtn.addEventListener("click", closeModal);
+    closeBtn.addEventListener("click", cerrarCaja);
 
-    /* ========= RENDER ========= */
-    function render(listUrls, gridId, metaKey, imgPrefix, imgFolder){
+    
+    function render(lista, gridId, cual, imgPrefix, carpeta){
       const grid = document.getElementById(gridId);
       grid.innerHTML = "";
 
-      listUrls.forEach((url, i) => {
-        const preview = driveViewToPreview(url);
-        const m = (meta[metaKey] && meta[metaKey][i]) ? meta[metaKey][i] : {
+      lista.forEach(function(url, i){
+        var preview = arreglaDrive(url);
+        var m = (dataAnime[cual] && dataAnime[cual][i]) ? dataAnime[cual][i] : {
           title: `Episodio ${i+1}`,
           desc: "Descripción pendiente."
         };
 
-        const num = i + 1;
-        const imgPath = (imgFolder ? (imgFolder + "/") : "") + imgPrefix + num + ".png";
+        var num = i+1;
+        var imgPath = (carpeta ? carpeta + "/" : "") + imgPrefix + num + ".png";
 
-        const card = document.createElement("div");
+        var card = document.createElement("div");
         card.className = "card";
 
         card.innerHTML = `
-          <div class="thumb" data-preview="${preview}" data-title="${escapeHtml(m.title)}">
-            <img src="${imgPath}" alt="${escapeHtml(m.title)}"
+          <div class="thumb" data-preview="${preview}" data-title="${escapar(m.title)}">
+            <img src="${imgPath}" alt="${escapar(m.title)}"
                  onerror="this.style.display='none'; const fb=this.nextElementSibling; fb.style.display='flex'; fb.textContent='${num}';">
             <div class="fallback" style="display:none"></div>
           </div>
 
-          <div class="epTitle">${escapeHtml(m.title)}</div>
-          <div class="epDesc">${escapeHtml(m.desc)}</div>
+          <div class="epTitle">${escapar(m.title)}</div>
+          <div class="epDesc">${escapar(m.desc)}</div>
 
           <div class="actions">
-            <button class="btn ver" data-preview="${preview}" data-title="${escapeHtml(m.title)}">VER</button>
+            <button class="btn ver" data-preview="${preview}" data-title="${escapar(m.title)}">VER</button>
           </div>
         `;
 
-        // Click en miniatura o en VER -> abre modal
-        card.querySelector(".thumb").addEventListener("click", () => openModal(preview, m.title));
-        card.querySelector(".btn.ver").addEventListener("click", () => openModal(preview, m.title));
+        card.querySelector(".thumb").addEventListener("click", () => abrirCaja(preview, m.title));
+        card.querySelector(".btn.ver").addEventListener("click", () => abrirCaja(preview, m.title));
 
         grid.appendChild(card);
       });
     }
 
-    function escapeHtml(str){
+    function escapar(str){
       return String(str)
         .replaceAll("&","&amp;")
         .replaceAll("<","&lt;")
@@ -679,32 +679,28 @@
         .replaceAll("'","&#039;");
     }
 
-    /* ========= TABS ========= */
-    const tabs = document.querySelectorAll(".tab");
-    const panels = ["kon-s1", "kon-s2", "shoujo"];
+    
+    var tabs = document.querySelectorAll(".tab");
+    var paneles = ["kon-s1", "kon-s2", "shoujo"];
 
     tabs.forEach(btn => {
       btn.addEventListener("click", () => {
-        const target = btn.dataset.show;
+        var target = btn.dataset.show;
 
         tabs.forEach(t => t.classList.remove("active"));
         btn.classList.add("active");
 
-        panels.forEach(id => {
-          document.getElementById(id).style.display = (id === target) ? "block" : "none";
+        paneles.forEach(id => {
+          document.getElementById(id).style.display = (id == target) ? "block" : "none";
         });
       });
     });
 
-    /* ========= INIT ========= */
-    /* thumbs:
-       - K-ON T1: a1..a14 dentro de carpeta k1
-       - K-ON T2: b1..b27 dentro de carpeta k2
-       - Shoujo:  c1..c12 dentro de carpeta s1  (<<< ESTE ERA EL PROBLEMA: te lo dejo bien)
-    */
-    render(season1, "episodes-kon-s1", "kon-s1", "a", "k1");
-    render(season2, "episodes-kon-s2", "kon-s2", "b", "k2");
-    render(shoujo,  "episodes-shoujo", "shoujo", "c", "s1");
+    
+    
+    render(temp1, "episodes-kon-s1", "kon-s1", "a", "k1");
+    render(tempdos, "episodes-kon-s2", "kon-s2", "b", "k2");
+    render(viajesito,  "episodes-shoujo", "shoujo", "c", "s1");
   </script>
 </body>
 </html>
